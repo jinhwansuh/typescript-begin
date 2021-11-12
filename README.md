@@ -1,2 +1,2 @@
-# typescript-begin
- typescript 이용하기
+# typescript
+Reading Effective Typescript (by Dan VanderKam)
