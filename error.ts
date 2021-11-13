@@ -194,52 +194,105 @@
 
 // 아이템 9
 
-interface Person {
-  name: string;
+// interface Person {
+//   name: string;
+// }
+
+// const alice: Person = { name: 'Alice' }; // 타입 선언 Type Inference  권장
+// const bob = { name: 'Bob' } as Person; // 타입 단언 Type Assertion
+
+// // Why?
+
+// const alice1: Person = {}; // 오류 생김 - 해당 인터페이스를 만족하는지 검사.
+// const bob1 = {} as Person; // 오류 없음 - 강제로 타입을 지정했으니 타입 체커에게 오류를 무시하라고 하는 것
+
+// const alice2: Person = {
+//   name: 'Alice',
+//   occupation: 'developer',
+// };
+// const bob2 = {
+//   name: 'bob',
+//   occupation: 'developer',
+// } as Person; // 여기서도 오류가 없음,,
+
+// const people = ['alice', 'bob', 'jan'].map((name) => ({ name })); // type이 {}
+// people;
+
+// const people1 = ['alice', 'bob', 'jan'].map((name) => ({ name } as Person));
+// people1;
+
+// const people2 = ['alice', 'bob', 'jan'].map((name) => ({} as Person));
+// people2;
+
+// const people3 = ['alice', 'bob', 'jan'].map((name) => {
+//   const person: Person = { name };
+//   return person;
+// }); // 타입이 Person[]
+// people3;
+
+// const people4 = ['alice', 'bob', 'jan'].map((name): Person => ({ name })); // 간결하게 쓰기 가능 소괄호 중요!!!
+// people4;
+
+// const peopleReal: Person[] = ['alice', 'bob', 'jan'].map(
+//   (name): Person => ({ name })
+// ); // 직접 명시적 선언
+// peopleReal;
+
+// document.querySelector('#myButton').addEventListener('click', (e) => {
+//   e.currentTarget;
+//   const button = e.currentTarget as HTMLButtonElement;
+//   button;
+// }); // 직접적으로 쓸 경우 오류 발생 타입스크립트는 document를 읽지도 못하고 myButton이 뭔지도 모름.
+
+// 아이템 10
+
+// 아이템 11
+
+interface Room {
+  numDoors: number;
+  ceilingHeightFt: number;
+}
+const r: Room = {
+  numDoors: 1,
+  ceilingHeightFt: 10,
+  elephant: 'present',
+}; // 안됌
+
+const obj = {
+  numDoors: 1,
+  ceilingHeightFt: 10,
+  elephant: 'present',
+};
+const r1: Room = obj; // 됌 obj는 Room의 상위 집합이기 때문에,
+
+interface Options {
+  title: string;
+  darkMode?: boolean;
+}
+const setDarkMode = () => {};
+function createWindow(options: Options) {
+  if (options.darkMode) {
+    setDarkMode();
+  }
+}
+createWindow({
+  title: 'Spider',
+  darkmode: true, // darkMode입니까? 오류
+});
+
+const o1: Options = document;
+const o2: Options = new HTMLAnchorElement();
+
+const o3: Options = { darkmode: true, title: 'Ski Free' }; // 오류 : 객체리터럴을 통한 잉여 속성 체크
+const intermediate = { darkmode: true, title: 'Ski' };
+const o: Options = intermediate; // 정상 잉여 속성 체크를 하기 않았기 때문에!!!!!
+const o4 = { darkmode: true, title: 'Ski' } as Options; // 정상 타입 단언 역시 잉여 속성 체크를 안해서
+
+interface LineChartOptions {
+  logscale?: boolean;
+  invertedYAxis?: boolean;
+  areaChart?: boolean;
 }
 
-const alice: Person = { name: 'Alice' }; // 타입 선언 Type Inference  권장
-const bob = { name: 'Bob' } as Person; // 타입 단언 Type Assertion
-
-// Why?
-
-const alice1: Person = {}; // 오류 생김 - 해당 인터페이스를 만족하는지 검사.
-const bob1 = {} as Person; // 오류 없음 - 강제로 타입을 지정했으니 타입 체커에게 오류를 무시하라고 하는 것
-
-const alice2: Person = {
-  name: 'Alice',
-  occupation: 'developer',
-};
-const bob2 = {
-  name: 'bob',
-  occupation: 'developer',
-} as Person; // 여기서도 오류가 없음,,
-
-const people = ['alice', 'bob', 'jan'].map((name) => ({ name })); // type이 {}
-people;
-
-const people1 = ['alice', 'bob', 'jan'].map((name) => ({ name } as Person));
-people1;
-
-const people2 = ['alice', 'bob', 'jan'].map((name) => ({} as Person));
-people2;
-
-const people3 = ['alice', 'bob', 'jan'].map((name) => {
-  const person: Person = { name };
-  return person;
-}); // 타입이 Person[]
-people3;
-
-const people4 = ['alice', 'bob', 'jan'].map((name): Person => ({ name })); // 간결하게 쓰기 가능 소괄호 중요!!!
-people4;
-
-const peopleReal: Person[] = ['alice', 'bob', 'jan'].map(
-  (name): Person => ({ name })
-); // 직접 명시적 선언
-peopleReal;
-
-document.querySelector('#myButton').addEventListener('click', (e) => {
-  e.currentTarget;
-  const button = e.currentTarget as HTMLButtonElement;
-  button;
-}); // 직접적으로 쓸 경우 오류 발생
+const opts = { logScale: true }; // 처음부터 공통된 속성이 없어서 오류가 난다.
+const oo: LineChartOptions = opts; // 이 부분 음?

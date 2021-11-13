@@ -3,8 +3,24 @@
 //   { name: 'Alabama', capital: 'Montgomery' },
 //   { name: 'Ska', capitol: 'Kime' },
 // ];
-var alice = { name: 'Alice' }; // 타입 선언 Type Inference  권장
-var bob = { name: 'Bob' }; // 타입 단언 Type Assertion
-// Why?
-var alice1 = {}; // 오류 생김
-var bob1 = {}; // 오류 없음 - 강제로 타입을 지정했으니 타입 체커에게 오류를 무시하라고 하는 것
+var r = {
+    numDoors: 1,
+    ceilingHeightFt: 10,
+    // elephant: 'present',
+}; // 안됌
+var obj = {
+    numDoors: 1,
+    ceilingHeightFt: 10,
+    elephant: 'present',
+};
+var r1 = obj; // 됌 obj는 Room의 상위 집합이기 때문에,
+var setDarkMode = function () { };
+function createWindow(options) {
+    if (options.darkMode) {
+        setDarkMode();
+    }
+}
+createWindow({
+    title: 'Spider',
+    darkmode: true, // darkMode입니까? 오류
+});
