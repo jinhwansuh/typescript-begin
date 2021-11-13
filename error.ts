@@ -298,7 +298,7 @@
 // const oo: LineChartOptions = opts; // 이 부분 음?
 
 // 아이템 12
-
+/* 
 function rollDice1(sides: number): number {
   return 1;
 } // 함수 문장
@@ -330,3 +330,62 @@ const add1: BinaryFn =(a, b) => a+ b;
 const sub1: BinaryFn = (a,b) => a -b;
 const mul1: BinaryFn = (a, b) => a * b;
 const div1: BinaryFn = (a, b) => a/b;
+
+ */
+
+// 아이템 13
+
+// 타입 적용 2가지 방법
+
+type TState = {
+  name: string;
+  capital: string;
+};
+
+interface IState {
+  name: string;
+  capital: string;
+}
+
+// 타입과 인터페이스의 존재하는 차이를 분명하게 하자
+
+const wyoming: TState = {
+  name: 'Wyoming',
+  capital: 'Cheyenne',
+  population: 500_000, // TState에 populate이 없다.
+};
+
+type TDic = { [key: string]: string };
+interface IDict {
+  [key: string]: string;
+}
+
+type TFn = (x: number) => string;
+interface IFn {
+  (x: number): string;
+}
+
+const toStrT: TFn = (x) => '' + x;
+const toStrI: IFn = (x) => '' + x;
+
+// 복잡하고 유니언을 | 써야한다면 타입별칭을 써야하고
+// 일관성과 보강의 관점에서는 인터페이스를 사용,
+// 하지만 일관되게 사용하는 쪽으로 사용하는게 맞다! 이것이 (Team By Team?)
+
+// 하지만, API에 대한 타입 선언을 작성해야 한다면 인터페이스를 사용하는게 좋다. 변경하기 편하기 대문에
+
+interface ISta {
+  name: string;
+  capital: string;
+}
+interface ISta {
+  population: number;
+}
+
+const ww: ISta = {
+  name: 'ww',
+  capital: 'cc',
+  population: 23,
+}; // 정상 선언 병합 delaration merging
+
+// 타입 선언은 선언 병합을 할 순 없다! 잘못된 설계
