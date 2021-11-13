@@ -334,7 +334,7 @@ const div1: BinaryFn = (a, b) => a/b;
  */
 
 // 아이템 13
-
+/* 
 // 타입 적용 2가지 방법
 
 type TState = {
@@ -388,4 +388,95 @@ const ww: ISta = {
   population: 23,
 }; // 정상 선언 병합 delaration merging
 
-// 타입 선언은 선언 병합을 할 순 없다! 잘못된 설계
+// 타입 선언은 선언 병합을 할 순 없다! 잘못된 설계 */
+
+// 아이템 14
+
+// Don't repeat yourself DRY
+
+interface Person {
+  firstName: string;
+  lastName: string;
+}
+interface PersonWithBirthDate {
+  firstName: string;
+  lastName: string;
+  birth: Date;
+}
+
+// 여기에 middleName을 추가한다고 생각해보자 그럼 Person과 PersonWithDate는 다른 타입이 된다.
+
+// 그래서 추가적인 필드만 작성하면 된다.
+
+interface Person1 {
+  firstName: string;
+  lastName: string;
+}
+
+interface PersonWithBirthDate1 extends Person1 {
+  birth: Date;
+}
+
+// 일반적이진 않지만 타입선언으로 할 수 있다.
+type PersonWithBirthDate2 = Person1 & { birth: Date };
+
+interface State {
+  userId: string;
+  pageTitle: string;
+  recentFiles: string[];
+  pageContents: string;
+}
+
+// State를 확장하는 것
+interface TopNavState {
+  userId: string;
+  pageTitle: string;
+  recentFiles: string[];
+}
+// State의 부분집합으로 만들 수 있다.
+type TopNavState1 = {
+  userId: State['userId'];
+  pageTitle: State['pageTitle'];
+  recentFiles: State['recentFiles'];
+};
+// 리팩토링 중복 제거
+type TopNavState2 = {
+  [k in 'userId' | 'pageTitle' | 'recentFiles']: State[k];
+};
+
+// Pick!
+type Pick<T, K> = { [k in K]: T[K] }; // 루프를 도는 Pick은 이러한 형태
+
+type TopNavState3 = Pick<State, 'userId' | 'pageTitle' | 'recentFiles'>;
+
+interface SaveAction {
+  type: 'save';
+}
+interface LoadAction {
+  type: 'load';
+}
+type Action = SaveAction | LoadAction;
+type ActionType = 'save' | 'load'; // 타입의 반복!
+
+type ActionType1 = Action['type'];
+type ActionRec = Pick<Action, 'type'>;
+
+interface Name {
+  first: string;
+  last: string;
+}
+
+type DancingDuo<T extends Name> = [T, T];
+const couple1: DancingDuo<Name> = [
+  { first: 'ff', last: 'hh' },
+  { first: 'qq', last: 'zz' },
+];
+const couple2: DancingDuo<{ first: string }> = [
+  // 개념 물어보기 왜? 위에 제네릭에서 이미 T로 받은게 아닌가?
+  { first: 'zz' },
+  { first: 'ee' },
+];
+
+// 반복을 피하는게 좋다! 반복하지 않도록 주의
+// extends를 사용해 인터페이스 필드의 반복을 피하기
+// 제네릭은 아직 모르겠다. Pick, Partial, ReturnType 같은 제너릭 타입 익숙해지기.!!!
