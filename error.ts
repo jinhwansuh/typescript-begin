@@ -248,51 +248,85 @@
 
 // 아이템 11
 
-interface Room {
-  numDoors: number;
-  ceilingHeightFt: number;
-}
-const r: Room = {
-  numDoors: 1,
-  ceilingHeightFt: 10,
-  elephant: 'present',
-}; // 안됌
+// interface Room {
+//   numDoors: number;
+//   ceilingHeightFt: number;
+// }
+// const r: Room = {
+//   numDoors: 1,
+//   ceilingHeightFt: 10,
+//   elephant: 'present',
+// }; // 안됌
 
-const obj = {
-  numDoors: 1,
-  ceilingHeightFt: 10,
-  elephant: 'present',
+// const obj = {
+//   numDoors: 1,
+//   ceilingHeightFt: 10,
+//   elephant: 'present',
+// };
+// const r1: Room = obj; // 됌 obj는 Room의 상위 집합이기 때문에,
+
+// interface Options {
+//   title: string;
+//   darkMode?: boolean;
+// }
+// const setDarkMode = () => {};
+// function createWindow(options: Options) {
+//   if (options.darkMode) {
+//     setDarkMode();
+//   }
+// }
+// createWindow({
+//   title: 'Spider',
+//   darkmode: true, // darkMode입니까? 오류
+// });
+
+// const o1: Options = document;
+// const o2: Options = new HTMLAnchorElement();
+
+// const o3: Options = { darkmode: true, title: 'Ski Free' }; // 오류 : 객체리터럴을 통한 잉여 속성 체크
+// const intermediate = { darkmode: true, title: 'Ski' };
+// const o: Options = intermediate; // 정상 잉여 속성 체크를 하기 않았기 때문에!!!!!
+// const o4 = { darkmode: true, title: 'Ski' } as Options; // 정상 타입 단언 역시 잉여 속성 체크를 안해서
+
+// interface LineChartOptions {
+//   logscale?: boolean;
+//   invertedYAxis?: boolean;
+//   areaChart?: boolean;
+// }
+
+// const opts = { logScale: true }; // 처음부터 공통된 속성이 없어서 오류가 난다.
+// const oo: LineChartOptions = opts; // 이 부분 음?
+
+// 아이템 12
+
+function rollDice1(sides: number): number {
+  return 1;
+} // 함수 문장
+const rollDice2 = function (sides: number): number {
+  return 1;
+}; // 함수 표현식
+const rollDice3 = (sides: number): number => {
+  return 1;
+}; // 함수 표현식
+
+// 타입스크립트에서는 함수 표현식을 사용하는 것이 좋다!
+// 매개변수부터 반환값까지 전체를 함수 타입으로 선언하여 함수 표현식에 재사용할 수 있다는 장점이 있다.
+
+type DiceRollFn = (sides: number) => number;
+const rollDice: DiceRollFn = (sides) => {
+  return 1;
 };
-const r1: Room = obj; // 됌 obj는 Room의 상위 집합이기 때문에,
 
-interface Options {
-  title: string;
-  darkMode?: boolean;
-}
-const setDarkMode = () => {};
-function createWindow(options: Options) {
-  if (options.darkMode) {
-    setDarkMode();
-  }
-}
-createWindow({
-  title: 'Spider',
-  darkmode: true, // darkMode입니까? 오류
-});
 
-const o1: Options = document;
-const o2: Options = new HTMLAnchorElement();
+// 왜 함수 표현식을 써야할까? 아래 예시
+function add(a: number, b:number) {return a + b}
+function sub(a: number, b:number) {return a - b}
+function mul(a: number, b:number) {return a * b}
+function div(a: number, b:number) {return a / b}
+function aaa: BinaryFn {return 1} // 오류 이렇게 사용못함
 
-const o3: Options = { darkmode: true, title: 'Ski Free' }; // 오류 : 객체리터럴을 통한 잉여 속성 체크
-const intermediate = { darkmode: true, title: 'Ski' };
-const o: Options = intermediate; // 정상 잉여 속성 체크를 하기 않았기 때문에!!!!!
-const o4 = { darkmode: true, title: 'Ski' } as Options; // 정상 타입 단언 역시 잉여 속성 체크를 안해서
-
-interface LineChartOptions {
-  logscale?: boolean;
-  invertedYAxis?: boolean;
-  areaChart?: boolean;
-}
-
-const opts = { logScale: true }; // 처음부터 공통된 속성이 없어서 오류가 난다.
-const oo: LineChartOptions = opts; // 이 부분 음?
+type BinaryFn = (a: number, b: number) => number;
+const add1: BinaryFn =(a, b) => a+ b;
+const sub1: BinaryFn = (a,b) => a -b;
+const mul1: BinaryFn = (a, b) => a * b;
+const div1: BinaryFn = (a, b) => a/b;
