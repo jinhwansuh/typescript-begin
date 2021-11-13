@@ -95,3 +95,71 @@ function handleSelectItem(item: any) {
   selectedId = item.id;
 }
 renderSelector({ onSelectItem: handleSelectItem });
+
+// function getElement(elOrId: string | HTMLElement | null): HTMLElement { // 책의 코드
+//   if (typeof elOrId === 'object') {
+//     return elOrId;
+//   } else if (elOrId === null) {
+//     return document.body;
+//   } else {
+//     const el = document.getElementById(elOrId);
+//     return el;
+//   }
+// }
+
+function getElement1(elOrId: string | HTMLElement | null): HTMLElement | null {
+  // getElementById에는 null과 HTMLElement가 둘다 선언이 되어있다.
+  if (elOrId === null) {
+    return document.body;
+  } else if (typeof elOrId === 'object') {
+    return elOrId;
+  } else {
+    const el = document.getElementById(elOrId);
+    return el;
+  }
+}
+
+type AB = 'A' | 'B';
+const a: AB = 'A';
+
+interface Person {
+  name: string;
+}
+
+interface PersonSpan extends Person {
+  birth: Date;
+  death?: Date;
+}
+
+interface Point {
+  x: number;
+  y: number;
+}
+type PointKeys = keyof Point; // 타입은 "x" | "y" 이 된다.
+
+function sortBy<K extends keyof T, T>(vals: T[], key: K): T[] {
+  return [];
+}
+
+const pts: Point[] = [
+  { x: 1, y: 1 },
+  { x: 2, y: 0 },
+];
+
+sortBy(pts, 'z');
+
+const list = [1, 2]; // 이 타입은 number[] 인데
+const tuple: [number, number] = list; // 이건 안됌 [] 배열을 숫자들의 쌍 이라고 할 수가 없다. list가 상위 집합 [number, number]가 하위 집합
+
+const list1: [number, number] = [1, 2];
+const tuple1: number[] = list; // 이건 됌;
+
+const triple: [number, number, number] = [1, 2, 3];
+const double: [number, number] = triple; // length가 맞지 않기에 오류
+
+type T = Exclude<string | Date, string | number>; // 기본타입은 Date
+type NonZeroNums = Exclude<number, 0>;
+
+// 집합이라고 생각하면 편하다
+// T1이 T2에 할당 가능 (T1이 T2의 부분 집합)
+// T1이 T2를 상속 (T1이 T2의 부분 집합)
