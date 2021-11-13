@@ -483,7 +483,7 @@ const couple2: DancingDuo<{ first: string }> = [
  */
 
 // 아이템 15
-
+/* 
 const rocket = {
   name: 'Falcon 2',
   variant: 'Block 5',
@@ -524,3 +524,44 @@ const rocket2: Rocket1 = {
 };
 
 // 인덱스 시그니처 더 공부 필요!
+ */
+
+// 아이템 16
+
+// 숫자는 키로 사용할 수 없다.
+// 배열은 객체이기때문에 숫자 인덱스를 사용하는 것이 당연하다.
+// x['1'] 접근할 수 있다.
+// Object.keys를 이용하면 키가 문자열로 출력된다.
+// => 타입스크립트는 이러한 혼란을 바로잡기 위해 숫자 키를 허용하고 문자열 키와 다른 것으로 인식한다.
+
+interface Array<T> {
+  [n: number]: T;
+}
+
+const xs = [1, 2, 3];
+const x0 = xs[0];
+x0;
+const x1 = xs['1'];
+x1;
+
+function get<T>(array: T[], k: string): T {
+  return array[k]; // number형식이 아니다.
+}
+
+const keys = Object.keys(xs);
+for (const key in xs) {
+  key;
+  const x = xs[key];
+  x;
+}
+
+for (const x of xs) {
+  x;
+}
+
+xs.forEach((x, i) => {
+  i;
+  x;
+});
+
+// for-in 루프는 for-of 또는 C스타일 for 루프에 비해 몇 배나 느리다.
