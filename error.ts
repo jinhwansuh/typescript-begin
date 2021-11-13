@@ -164,30 +164,82 @@
 // // T1이 T2에 할당 가능 (T1이 T2의 부분 집합)
 // // T1이 T2를 상속 (T1이 T2의 부분 집합)
 
-interface Cylinder {
-  radius: number;
-  height: number;
+// interface Cylinder {
+//   radius: number;
+//   height: number;
+// }
+
+// const Cylinder = (radius: number, height: number) => ({ radius, height });
+
+// function calculateVolume(shape: unknown) {
+//   if (shape instanceof Cylinder) {
+//     shape.radius; // {} 형식에 radius 값이 없다고 나옴.
+//     // 이런 점이 가끔 오류를 야기함.
+//   }
+// }
+
+// // 타입스크립트에는 타입의 종류가 무수히 많지만, 타입스크립트 플레이그라운드 활용
+// // 자바스크립트에는 과거부터 지금까지 단 6개 string, number, boolean, undefined, object, function 의 런타임 종류만 존재
+
+// type Tuple = [string, number, Date];
+// type TupleEl = Tuple[number]; // 응? 뒤에 나온다니깐 우선 확인; (아이템 14)
+
+// function email({ subject: string, body: string }) {}
+
+// // 위 any타입 문제 해결
+
+// function email1({ subject, body }: { subject: string; body: string }) {
+//   // 값  추론
+// }
+
+// 아이템 9
+
+interface Person {
+  name: string;
 }
 
-const Cylinder = (radius: number, height: number) => ({ radius, height });
+const alice: Person = { name: 'Alice' }; // 타입 선언 Type Inference  권장
+const bob = { name: 'Bob' } as Person; // 타입 단언 Type Assertion
 
-function calculateVolume(shape: unknown) {
-  if (shape instanceof Cylinder) {
-    shape.radius; // {} 형식에 radius 값이 없다고 나옴.
-    // 이런 점이 가끔 오류를 야기함.
-  }
-}
+// Why?
 
-// 타입스크립트에는 타입의 종류가 무수히 많지만, 타입스크립트 플레이그라운드 활용
-// 자바스크립트에는 과거부터 지금까지 단 6개 string, number, boolean, undefined, object, function 의 런타임 종류만 존재
+const alice1: Person = {}; // 오류 생김 - 해당 인터페이스를 만족하는지 검사.
+const bob1 = {} as Person; // 오류 없음 - 강제로 타입을 지정했으니 타입 체커에게 오류를 무시하라고 하는 것
 
-type Tuple = [string, number, Date];
-type TupleEl = Tuple[number]; // 응? 뒤에 나온다니깐 우선 확인; (아이템 14)
+const alice2: Person = {
+  name: 'Alice',
+  occupation: 'developer',
+};
+const bob2 = {
+  name: 'bob',
+  occupation: 'developer',
+} as Person; // 여기서도 오류가 없음,,
 
-function email({ subject: string, body: string }) {}
+const people = ['alice', 'bob', 'jan'].map((name) => ({ name })); // type이 {}
+people;
 
-// 위 any타입 문제 해결
+const people1 = ['alice', 'bob', 'jan'].map((name) => ({ name } as Person));
+people1;
 
-function email1({ subject, body }: { subject: string; body: string }) {
-  // 값  추론
-}
+const people2 = ['alice', 'bob', 'jan'].map((name) => ({} as Person));
+people2;
+
+const people3 = ['alice', 'bob', 'jan'].map((name) => {
+  const person: Person = { name };
+  return person;
+}); // 타입이 Person[]
+people3;
+
+const people4 = ['alice', 'bob', 'jan'].map((name): Person => ({ name })); // 간결하게 쓰기 가능 소괄호 중요!!!
+people4;
+
+const peopleReal: Person[] = ['alice', 'bob', 'jan'].map(
+  (name): Person => ({ name })
+); // 직접 명시적 선언
+peopleReal;
+
+document.querySelector('#myButton').addEventListener('click', (e) => {
+  e.currentTarget;
+  const button = e.currentTarget as HTMLButtonElement;
+  button;
+}); // 직접적으로 쓸 경우 오류 발생
