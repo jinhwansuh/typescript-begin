@@ -391,7 +391,7 @@ const ww: ISta = {
 // 타입 선언은 선언 병합을 할 순 없다! 잘못된 설계 */
 
 // 아이템 14
-
+/* 
 // Don't repeat yourself DRY
 
 interface Person {
@@ -480,3 +480,47 @@ const couple2: DancingDuo<{ first: string }> = [
 // 반복을 피하는게 좋다! 반복하지 않도록 주의
 // extends를 사용해 인터페이스 필드의 반복을 피하기
 // 제네릭은 아직 모르겠다. Pick, Partial, ReturnType 같은 제너릭 타입 익숙해지기.!!!
+ */
+
+// 아이템 15
+
+const rocket = {
+  name: 'Falcon 2',
+  variant: 'Block 5',
+  thrust: '7,604 kN',
+};
+
+type Rocket = { [property: string]: string }; // 인덱스 시그니처
+// 3가지 의미
+// 1. 키의 이름 - 키의 위치만 표시하는 용도
+// 2. 키의 타입 - string이나 number 또는 symbol의 조합 - 보통은 string
+// 3. 값의 타입 - 어떤 것이든
+
+// 4가지 단점
+// name대신 Name을 써도 통과
+// 특정 키가 필요하지 않는다.
+// 키마다 다른 타입을 가질 수 없다.
+// name: 을 입력할 때, 키는 무엇이든 가능하기에 자동완성 기능이 동작하지 않는다.
+
+const rocket1: Rocket = {
+  name: 'Falcon',
+  variant: 'v1.0',
+  thrust: '4,595 kN',
+}; // 정상
+
+// 결론: 인덱스 시그니처는 부정확 하므로 더 나은 방법을 찾아야 한다.
+// 위에서 Rocket은 interface여야 한다.
+
+interface Rocket1 {
+  name: string;
+  variant: string;
+  thrust_KN: number;
+}
+
+const rocket2: Rocket1 = {
+  name: 'falcon 11',
+  variant: 'v1',
+  thrust_KN: 15_200,
+};
+
+// 인덱스 시그니처 더 공부 필요!
