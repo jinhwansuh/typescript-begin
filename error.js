@@ -67,3 +67,48 @@ function handleSelectItem(item) {
     selectedId = item.id;
 }
 renderSelector({ onSelectItem: handleSelectItem });
+// function getElement(elOrId: string | HTMLElement | null): HTMLElement { // 책의 코드
+//   if (typeof elOrId === 'object') {
+//     return elOrId;
+//   } else if (elOrId === null) {
+//     return document.body;
+//   } else {
+//     const el = document.getElementById(elOrId);
+//     return el;
+//   }
+// }
+function getElement1(elOrId) {
+    // getElementById에는 null과 HTMLElement가 둘다 선언이 되어있다.
+    if (elOrId === null) {
+        return document.body;
+    }
+    else if (typeof elOrId === 'object') {
+        return elOrId;
+    }
+    else {
+        var el = document.getElementById(elOrId);
+        return el;
+    }
+}
+var a = 'A';
+function sortBy(vals, key) {
+    return [];
+}
+var pts = [
+    { x: 1, y: 1 },
+    { x: 2, y: 0 },
+];
+sortBy(pts, 'z');
+var list = [1, 2]; // 이 타입은 number[] 인데
+var tuple = list; // 이건 안됌 [] 배열을 숫자들의 쌍 이라고 할 수가 없다. list가 상위 집합 [number, number]가 하위 집합
+var list1 = [1, 2];
+var tuple1 = list; // 이건 됌;
+var triple = [1, 2, 3];
+var double = triple; // length가 맞지 않기에 오류
+var Cylinder = function (radius, height) { return ({ radius: radius, height: height }); };
+function calculateVolume(shape) {
+    if (shape instanceof Cylinder) {
+        shape.radius; // {} 형식에 radius 값이 없다고 나옴.
+        // 이런 점이 가끔 오류를 야기함.
+    }
+}
